@@ -18,13 +18,12 @@ void Lexer::addInteger() {
 		switch (this->source[this->pos]) {
 			case '0' ... '9':
 				integer = integer + this->source[this->pos];
+				this->pos++;
 				break;
 			default:
 				break_out = true;
 				break;
 		}
-
-		this->pos++;
 	}
 
 	this->tokens.push_back(Token(TokenType::Integer, integer));
@@ -49,7 +48,15 @@ void Lexer::addOperator() {
 	}
 
 	this->pos++;
-	this->tokens.push_back(Token(token_type, std::string(1, this->source[this->pos])));
+	this->tokens.push_back(Token(token_type, ""));
+}
+
+void Lexer::addParenthesis() {
+	TokenType token_type;
+	token_type = this->source[this->pos] == '(' ? TokenType::LParen : TokenType::RParen;  
+
+	this->pos++;;
+	this->tokens.push_back(Token(token_type, ""));
 }
 
 std::vector<Token> Lexer::lex() {
@@ -60,6 +67,9 @@ std::vector<Token> Lexer::lex() {
 				break;
 			case '+': case '-': case '*': case '/':
 				this->addOperator();
+				break;
+			case '(': case ')':
+				this->addParenthesis();
 				break;
 			case ' ':
 				this->pos++;

@@ -28,6 +28,7 @@ private:
 
 	void addInteger();
 	void addOperator();
+	void addParenthesis();
 public:
 	Lexer(std::string source);
 	std::vector<Token> lex();

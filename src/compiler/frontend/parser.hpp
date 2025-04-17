@@ -4,11 +4,11 @@
 
 struct Node {
 	Node* left;
-	Token value;
+	Token op;
 	Node* right;
 
-	Node(Node* left, Token value, Node* right);
-	Node(Token value);
+	Node(Node* left, Token op, Node* right);
+	Node(Token op);
 };
 
 class Parser {
@@ -17,9 +17,11 @@ private:
 	std::vector<Token> tokens;
 
 	void consume();
-	void factor();
-	void term();
-	void expression();
+	Token currentToken();
+
+	Node factor();
+	Node term();
+	Node expression();
 public:
 	Parser(std::vector<Token> tokens);
 	Node parse();
