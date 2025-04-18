@@ -43,27 +43,15 @@ std::unique_ptr<Node> Parser::factor() {
 // <term> ::= <factor> | <factor> <"Multiply" | "Divide"> <factor>
 std::unique_ptr<Node> Parser::term() {
 	auto node = this->factor();
-	if (this->pos >= this->tokens.size())
-		return node;
 
-	switch (this->currentToken().type) {
-		case TokenType::Multiply:
-		case TokenType::Divide: {
-			Token op = this->currentToken();
-			this->consume(op.type);
+	while (this->pos < this->tokens.size()) {
+		if (!(this->currentToken().type == TokenType::Multiply || this->currentToken().type == TokenType::Divide))
+			break;
 
-			auto right = this->factor();
-			return std::make_unique<Node>(std::move(node), op, std::move(right));
-			break;
-		}
-		case TokenType::Plus:
-		case TokenType::Minus: {
-			return node;
-			break;
-		}
-		default:
-			throw std::invalid_argument("Expected different token when parsing term");
-			break;
+		Token op = this->currentToken();
+		this->consume(this->currentToken().type);
+		
+		node = std::make_unique<Node>(std::move(node), op, std::move(this->factor()));
 	}
 
 	return node;
@@ -72,22 +60,15 @@ std::unique_ptr<Node> Parser::term() {
 // <expression> ::= <term> | <term> <"Plus" | "Minus"> <term>
 std::unique_ptr<Node> Parser::expression() {
 	auto node = this->term();
-	if (this->pos >= this->tokens.size())
-		return node;
 
-	switch (this->currentToken().type) {
-		case TokenType::Plus:
-		case TokenType::Minus:{
-			Token op = this->currentToken();
-			this->consume(op.type);
+	while (this->pos < this->tokens.size()) {
+		if (!(this->currentToken().type == TokenType::Plus || this->currentToken().type == TokenType::Minus))
+			break;
+
+		Token op = this->currentToken();
+		this->consume(this->currentToken().type);
 		
-			auto right = this->factor();
-			return std::make_unique<Node>(std::move(node), op, std::move(right));
-			break;
-		}
-		default:
-			throw std::invalid_argument("Expected different token when parsing expression");
-			break;
+		node = std::make_unique<Node>(std::move(node), op, std::move(this->factor()));
 	}
 
 	return node;
