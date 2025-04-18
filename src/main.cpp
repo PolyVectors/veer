@@ -5,11 +5,11 @@
 #include "parser.hpp"
 
 int main() {
-	Lexer lexer("(1*2)");
+	Lexer lexer("1 + 2");
 	Parser parser(lexer.lex());
 	
 	std::unique_ptr<Node> node = parser.parse();
-	std::cout << node.get()->right.get()->op.value << "\n";
+	std::cout << node.get()->op.type << "\n";
 
 	return 0;
 }
