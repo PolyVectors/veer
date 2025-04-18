@@ -1,14 +1,15 @@
+#include <memory>
 #include "lexer.hpp"
 
 #pragma once
 
 struct Node {
-	Node* left;
+	std::unique_ptr<Node> left;
 	Token op;
-	Node* right;
+	std::unique_ptr<Node> right;
 
-	Node(Node* left, Token op, Node* right);
 	Node(Token op);
+	Node(std::unique_ptr<Node> left, Token op, std::unique_ptr<Node> right);
 };
 
 class Parser {
@@ -16,13 +17,13 @@ private:
 	unsigned int pos;
 	std::vector<Token> tokens;
 
-	void consume();
+	void consume(TokenType type);
 	Token currentToken();
 
-	Node factor();
-	Node term();
-	Node expression();
+	std::unique_ptr<Node> factor();
+	std::unique_ptr<Node> term();
+	std::unique_ptr<Node> expression();
 public:
 	Parser(std::vector<Token> tokens);
-	Node parse();
+	std::unique_ptr<Node> parse();
 };
