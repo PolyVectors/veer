@@ -28,7 +28,7 @@ implement a proper recursive descent parser (only match expressions for now)
 [AMD64 Architecture Programmer’s Manual Volume 3: General-Purpose and System Instructions](https://community.amd.com/sdtpp67534/attachments/sdtpp67534/processors-discussions/29160/1/AMD64-3.pdf)
 
 ### inspirational projects
-[flatassembler](https://github.com/tgrysztar/fasm)
+[flat assembler](https://github.com/tgrysztar/fasm)
 \
 \
 [dmd](https://github.com/dlang/dmd/)
