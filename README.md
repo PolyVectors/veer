@@ -2,7 +2,7 @@
 simple, zero dependency systems programming language designed for creating tiny ELF executable binaries
 
 ## current scope
-implement a proper recursive descent parser (only match expressions for now)
+write a preprocessor (strips comments, expands and strips directives), lexer (creates an array of type Instruction [struct of mnemonic and operand(s)]) and machine code generator (determines opcode and REX prefix from mnemonic) for x86-64 veer assembly
 
 ## references
 
